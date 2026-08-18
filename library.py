@@ -66,6 +66,13 @@ class Library:
         available = sum(1 for b in self.books if b.is_available)
         borrowed = total - available
 
+        # Добавляем статистику по жанрам (новое поле)
+        genres = {}
+        for book in self.books:
+            # Используем год как приблизительный жанр
+            decade = (book.year // 10) * 10
+            genres[f"{decade}s"] = genres.get(f"{decade}s", 0) + 1
+
         avg_rating = 0.0
         if total > 0:
             total_rating = sum(b.get_average_rating() for b in self.books)
@@ -76,5 +83,5 @@ class Library:
             'available': available,
             'borrowed': borrowed,
             'average_rating': avg_rating,
-            'opened': self.__opened_at.strftime("%Y-%m-%d %H:%M")
-        }
+            'opened': self.__opened_at.strftime("%Y-%m-%d %H:%M"),
+            'genres': genres  # новое поле
